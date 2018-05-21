@@ -24,7 +24,6 @@ app.get('/', (req, res, next) => {
         QuestionModel.find({}, (err, questions) => {
             if (err) console.log(err);
             req.questionList = questions;
-            console.log(req.questionList);
             if (req.questionList.length <= 0) res.render('home', {question: null})
             else next();
         })

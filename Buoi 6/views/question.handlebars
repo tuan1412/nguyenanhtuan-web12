@@ -1,8 +1,21 @@
 {{#if question}}
-<h1>Content: {{question.content}}</h1>
-<p>Vote: {{totalVote}}</p>
-<p>Yes: {{question.yes}}</p>
-<p>No: {{question.no}}</p>
+<div class="container text-center">
+    <h1 class="content">{{question.content}}</h1>
+    <h3>{{totalVote}} vote</h3>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width:{{percentYes}}%"><i class="far fa-thumbs-up"> {{percentYes}}%</i>
+        </div>
+       <div class="progress-bar bg-danger" role="progressbar" style="width:{{percentNo}}%"><i class="far fa-thumbs-down"> {{percentNo}}%</i>
+        </div>
+    </div>
+    <a class="btn btn-success btn-lg other-question" href="/">Xem câu hỏi khác</a>
+</div>
+
 {{else}}
 <div>K thay question</div>
 {{/if}}
+
+<script>
+    const current = document.getElementById('answer');
+    current.classList.add('active');
+</script>

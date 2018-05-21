@@ -9,36 +9,41 @@ Router.get('/:id', (req, res) => {
     const idQuestion = req.params.id;
     QuestionModel.findById(idQuestion, (err, question) => {
         if (err) console.log(err)
-        else res.render('question', {
-            question,  
-            totalVote: question ? question.yes + question.no : 0
-        });
+        else {
+            const totalVote = question.yes + question.no;
+            const percentYes = totalVote != 0 ? (question.yes  / (question.yes + question.no) * 100).toFixed(0) : 50
+            const percentNo = totalVote != 0 ? (question.no  / (question.yes + question.no) * 100).toFixed(0) : 50
+            res.render('question', {
+                question,
+                totalVote,
+                percentYes,
+                percentNo
+            });
+        }
+        
     });
 })
 
 Router.get('/:id/:vote', (req, res) => {
     const vote = req.params.vote;
     const idQuestion = req.params.id;
-    QuestionModel.findById(idQuestion, (err, question) => {
-        if (err) console.log(err)
+
+    // QuestionModel.findByIdAndUpdate(idQuestion, { $inc: { [vote]: 1 } }, (err, question) => {
+    //     if (err) console.log(err);
+    //     else res.redirect(`/question/${idQuestion}`)
+    // })
+
+    QuestionModel.findById(idQuestion, (err, questionFound) => {
+        if (err) console.log(err);
         else {
-            const updatedVote = question[vote] + 1;
-            if (vote == 'yes') {
-                QuestionModel.findByIdAndUpdate(idQuestion, {yes: updatedVote}, (err, raw) => {
-                    if (err) console.log(err)
-                    else {
-                        res.redirect(`/question/${idQuestion}`)
-                    }
-                })
-            } else {
-                QuestionModel.findByIdAndUpdate(idQuestion, {no: updatedVote}, (err, raw) => {
-                    if (err) console.log(err)
-                    else {
-                        res.redirect(`/question/${idQuestion}`)
-                    }
-                })
-            }
+            questionFound[vote] += 1;
+
+            questionFound.save((err, question) => {
+                if (err) console.log(err);
+                else res.redirect(`/question/${idQuestion}`)
+            });
         }
+
     })
 });
 

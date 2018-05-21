@@ -1,0 +1,20 @@
+div.progress {
+    height: 40px;
+    font-size: 1.5em;
+}
+
+h1.content {
+    margin-bottom: 60px;
+}
+
+div.nav-btn {
+    margin-top: 60px;
+}
+
+a.other-question {
+    margin-top: 60px;
+}
+
+nav {
+    margin-bottom: 60px;
+}
